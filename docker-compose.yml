@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15
+    container_name: nouasseur-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: nouasseur_events
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Bun.js Application
+#   app:
+#     build:
+#       context: .
+#       dockerfile: Dockerfile
+#     container_name: nouasseur-app
+#     ports:
+#       - "3000:3000"
+#     environment:
+#       - DATABASE_URL=postgres://postgres:postgres@postgres:5432/nouasseur_events
+#       - NODE_ENV=development
+#     depends_on:
+#       postgres:
+#         condition: service_healthy
+#     volumes:
+#       - .:/app
+#       # Exclude node_modules from the host mount to avoid conflicts
+#       - /app/node_modules
+#     networks:
+#       - nouasseur-network
+#     # Add restart policy for more reliability
+#     restart: unless-stopped
+
+# networks:
+#   nouasseur-network:
+#     driver: bridge
+
+volumes:
+  postgres-data:
+#   node_modules: 

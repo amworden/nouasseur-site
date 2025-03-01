@@ -1,0 +1,86 @@
+# Dependencies
+node_modules/
+.pnp/
+.pnp.js
+
+# Build outputs
+dist/
+build/
+.next/
+out/
+.vite/
+*.tsbuildinfo
+
+# Environment variables and secrets
+.env
+.env.*
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.pem
+*.key
+*secret*
+*SECRET*
+*api_key*
+*API_KEY*
+*password*
+*PASSWORD*
+.npmrc
+
+# Excel files
+*.xls
+*.xlsx
+*.xlsm
+*.xlsb
+*.csv
+
+# Database
+*.sqlite
+*.db
+*.sql.gz
+*.dump
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+bun-debug.log*
+
+# Cache and temp files
+.cache/
+.temp/
+.tmp/
+.bun/
+.DS_Store
+.turbo
+.vercel
+.coverage
+.nyc_output
+coverage/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.yarn/*
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+
+# Local files
+*.local
+
+# Misc
+Thumbs.db
+desktop.ini
