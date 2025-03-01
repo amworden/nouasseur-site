@@ -45,6 +45,7 @@ nouasseur-site/
 
 The easiest way to get started is using Docker Compose, which will set up both the PostgreSQL database and the Bun.js application:
 
+
 1. Clone the repository:
    ```bash
    git clone https://github.com/yourusername/nouasseur-events.git
