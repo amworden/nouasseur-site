@@ -75,7 +75,7 @@ export function MembersPage({
                 <button
                   onClick={() => setCurrentPage(Math.max(currentPage - 1, 1))}
                   disabled={currentPage === 1}
-                  className="inline-flex items-center rounded-l-md border border-border bg-background px-3 py-2 text-sm font-medium text-foreground hover:bg-secondary disabled:opacity-50"
+                  className="inline-flex items-center rounded-l-md border border-border bg-primary px-3 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
                 >
                   Previous
                 </button>
@@ -100,7 +100,7 @@ export function MembersPage({
                       className={`inline-flex items-center border border-border px-4 py-2 text-sm font-medium ${
                         currentPage === pageNum
                           ? "bg-primary text-primary-foreground"
-                          : "bg-background text-foreground hover:bg-secondary"
+                          : "bg-primary/70 text-primary-foreground hover:bg-primary"
                       }`}
                     >
                       {pageNum}
@@ -111,7 +111,7 @@ export function MembersPage({
                 <button
                   onClick={() => setCurrentPage(Math.min(currentPage + 1, pageCount))}
                   disabled={currentPage === pageCount}
-                  className="inline-flex items-center rounded-r-md border border-border bg-background px-3 py-2 text-sm font-medium text-foreground hover:bg-secondary disabled:opacity-50"
+                  className="inline-flex items-center rounded-r-md border border-border bg-primary px-3 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
                 >
                   Next
                 </button>

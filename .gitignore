@@ -84,3 +84,11 @@ coverage/
 # Misc
 Thumbs.db
 desktop.ini
+
+# Excel data files
+*.xlsx
+*.xls
+
+# Local environment files
+.env
+.env.local

@@ -1,16 +1,47 @@
 import { Elysia, t } from 'elysia';
 import { db } from '../db';
 import { events, type NewEvent } from '../db/schema';
-import { eq } from 'drizzle-orm';
+import { eq, sql } from 'drizzle-orm';
 
 export const eventsApi = new Elysia({ prefix: '/api/events' })
-  // Get all events
-  .get('/', async () => {
+  // Get all events (paginated)
+  .get('/', async ({ query }) => {
     try {
-      // Sort by sort code first, then by name
+      const page = parseInt(query?.page || '1');
+      const pageSize = parseInt(query?.pageSize || '12');
+      const offset = (page - 1) * pageSize;
+      
+      // Get total count for pagination info
+      const countResult = await db.select({ count: sql`count(*)` }).from(events);
+      const totalCount = Number(countResult[0].count);
+      
+      // Get today's date for sorting
+      const today = new Date();
+      today.setHours(0, 0, 0, 0); // Set to beginning of today
+      
+      // Get paginated events using the case logic for ordering
       const allEvents = await db.select().from(events)
-        .orderBy(events.eventSortcode, events.eventName);
-      return { success: true, data: allEvents };
+        .orderBy(
+          sql`CASE 
+            WHEN ${events.eventDatebeg} >= ${today.toISOString()} THEN 0 
+            WHEN ${events.eventDatebeg} IS NULL THEN 1 
+            ELSE 2 
+          END, COALESCE(${events.eventDatebeg}, '9999-12-31')`, 
+          events.eventName
+        )
+        .limit(pageSize)
+        .offset(offset);
+      
+      return { 
+        success: true, 
+        data: allEvents,
+        pagination: {
+          page,
+          pageSize,
+          totalCount,
+          totalPages: Math.ceil(totalCount / pageSize)
+        }
+      };
     } catch (error) {
       console.error('Error fetching events:', error);
       return { success: false, error: 'Failed to fetch events' };
@@ -42,7 +73,8 @@ export const eventsApi = new Elysia({ prefix: '/api/events' })
   // Create a new event
   .post('/', async ({ body }) => {
     try {
-      const newEvent = await db.insert(events).values(body).returning();
+      const eventData = body as NewEvent;
+      const newEvent = await db.insert(events).values(eventData).returning();
       return { success: true, data: newEvent[0] };
     } catch (error) {
       console.error('Error creating event:', error);
@@ -70,9 +102,10 @@ export const eventsApi = new Elysia({ prefix: '/api/events' })
   // Update an event
   .put('/:id', async ({ params, body }) => {
     try {
+      const updateData = body as Partial<NewEvent>;
       const updatedEvent = await db.update(events)
         .set({
-          ...body,
+          ...updateData,
           updatedAt: new Date()
         })
         .where(eq(events.id, parseInt(params.id)))

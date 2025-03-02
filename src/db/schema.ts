@@ -91,6 +91,30 @@ export const events = pgTable('events', {
   updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow()
 });
 
+export const directories = pgTable('directories', {
+  id: serial('id').primaryKey(),
+  name: varchar('name', { length: 255 }).notNull(),
+  position: varchar('position', { length: 255 }),
+  organization: varchar('organization', { length: 255 }),
+  department: varchar('department', { length: 255 }),
+  address: varchar('address', { length: 255 }),
+  city: varchar('city', { length: 100 }),
+  state: varchar('state', { length: 50 }),
+  zipCode: varchar('zip_code', { length: 20 }),
+  country: varchar('country', { length: 100 }),
+  phone: varchar('phone', { length: 50 }),
+  email: varchar('email', { length: 255 }),
+  website: varchar('website', { length: 255 }),
+  category: varchar('category', { length: 100 }),
+  subCategory: varchar('sub_category', { length: 100 }),
+  description: text('description'),
+  notes: text('notes'),
+  sortOrder: integer('sort_order'),
+  isActive: boolean('is_active').default(true),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow()
+});
+
 export type User = typeof users.$inferSelect;
 export type NewUser = typeof users.$inferInsert;
 
@@ -98,4 +122,7 @@ export type Member = typeof members.$inferSelect;
 export type NewMember = typeof members.$inferInsert;
 
 export type Event = typeof events.$inferSelect;
-export type NewEvent = typeof events.$inferInsert; 
+export type NewEvent = typeof events.$inferInsert;
+
+export type Directory = typeof directories.$inferSelect;
+export type NewDirectory = typeof directories.$inferInsert; 
